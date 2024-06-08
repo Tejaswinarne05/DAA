@@ -1,0 +1,32 @@
+from collections import deque, Counter
+
+class FirstUnique:
+    def __init__(self, nums: list[int]):
+        self.queue = deque(nums)
+        self.counts = Counter(self.queue)
+        self.unique_queue = deque()
+        
+        # Populate the unique_queue with the first unique elements
+        for num in nums:
+            if self.counts[num] == 1:
+                self.unique_queue.append(num)
+
+    def showFirstUnique(self) -> int:
+        # Remove non-unique elements from the front of the unique_queue
+        while self.unique_queue and self.counts[self.unique_queue[0]] > 1:
+            self.unique_queue.popleft()
+        
+        # Return the first element of the unique_queue if it's not empty, otherwise return -1
+        return self.unique_queue[0] if self.unique_queue else -1
+
+    def add(self, value: int) -> None:
+        self.queue.append(value)
+        self.counts[value] += 1
+        
+        # If the added value becomes unique, add it to the unique_queue
+        if self.counts[value] == 1:
+            self.unique_queue.append(value)
+
+# Example usage:
+firstUnique = FirstUnique([2,3,5])
+print(firstUnique.showFirstUnique())
