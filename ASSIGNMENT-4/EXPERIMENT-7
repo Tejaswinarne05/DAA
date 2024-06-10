@@ -9,3 +9,4 @@ def minOperations(nums):
         res += 1
     return res
 print(minOperations([4,2,0,3,1])) 
+
