@@ -1,0 +1,18 @@
+def my_atoi(s):
+    s = s.strip()
+    if not s:
+        return 0
+    sign = 1
+    index = 0
+    if s[0] in ['-', '+']:
+        sign = -1 if s[0] == '-' else 1
+        index += 1
+    result = 0
+    while index < len(s) and s[index].isdigit():
+        result = result * 10 + int(s[index])
+        index += 1
+    result *= sign
+    result = max(min(result, 2**31 - 1), -2**31)
+    return result
+s1 = "42"
+print(my_atoi(s1))  # Output: 42
