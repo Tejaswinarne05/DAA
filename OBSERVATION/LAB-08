@@ -10,7 +10,8 @@ bool isPrime(int num, int i)
         return true;
     return isPrime(num, i + 1);
 }
-void printPrimes(int n, int current) {
+void printPrimes(int n, int current) 
+{
     if (current > n)
         return;
     if (isPrime(current, 2))
