@@ -1,6 +1,0 @@
-def is_palindrome(x):
-    if x < 0:
-        return False
-    return str(x) == str(x)[::-1]
-x1 = 121
-print(is_palindrome(x1))  # Output: True
