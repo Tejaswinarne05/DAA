@@ -1,0 +1,59 @@
+import sqlite3
+conn = sqlite3.connect(':memory:')
+cursor = conn.cursor()
+cursor.execute('''
+    CREATE TABLE Orders (
+        order_id INT PRIMARY KEY,
+        customer_id INT,
+        order_date DATE,
+        price INT
+    )
+''')
+orders_data = [
+    (1, 1, '2019-07-01', 1100),
+    (2, 1, '2019-11-01', 1200),
+    (3, 1, '2020-05-26', 3000),
+    (4, 1, '2021-08-31', 3100),
+    (5, 1, '2022-12-07', 4700),
+    (6, 2, '2015-01-01', 700),
+    (7, 2, '2017-11-07', 1000),
+    (8, 3, '2017-01-01', 900),
+    (9, 3, '2018-11-07', 900)
+]
+cursor.executemany('INSERT INTO Orders VALUES (?, ?, ?, ?)', orders_data)
+query = '''
+WITH yearly_purchases AS (
+    SELECT
+        customer_id,
+        strftime('%Y', order_date) AS year,
+        SUM(price) AS total_price
+    FROM Orders
+    GROUP BY customer_id, year
+),
+yearly_ranks AS (
+    SELECT
+        customer_id,
+        year,
+        total_price,
+        RANK() OVER (PARTITION BY customer_id ORDER BY year) AS year_rank
+    FROM yearly_purchases
+),
+ordered_purchases AS (
+    SELECT
+        customer_id,
+        total_price,
+        LAG(total_price) OVER (PARTITION BY customer_id ORDER BY year_rank) AS prev_total_price
+    FROM yearly_ranks
+)
+SELECT DISTINCT customer_id
+FROM ordered_purchases
+WHERE prev_total_price IS NULL OR total_price > prev_total_price
+GROUP BY customer_id
+HAVING COUNT() = (SELECT COUNT() FROM yearly_purchases yp WHERE yp.customer_id = ordered_purchases.customer_id)
+'''
+cursor.execute(query)
+results = cursor.fetchall()
+print("Customer IDs with strictly increasing purchases:")
+for row in results:
+    print(row[0])
+conn.close()
