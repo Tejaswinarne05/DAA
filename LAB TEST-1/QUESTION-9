@@ -1,0 +1,3 @@
+s = "Hello World"
+a=len(s.strip().split(' ')[-1])
+print(a)
