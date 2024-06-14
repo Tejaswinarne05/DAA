@@ -1,0 +1,13 @@
+import math
+
+def min_valid_subarrays(nums):
+    n = len(nums)
+    res = n
+    for i in range(n):
+        gcd = nums[i]
+        for j in range(i, n):
+            gcd = math.gcd(gcd, nums[j])
+            if gcd > 1:
+                res = min(res, 1 + min_valid_subarrays(nums[:i] + nums[j+1:]))
+    return res if res != n else -1
+print(min_valid_subarrays([2,6,3,4,3]))
