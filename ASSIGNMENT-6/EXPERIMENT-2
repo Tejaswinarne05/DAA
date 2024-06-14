@@ -1,0 +1,17 @@
+def min_operations_to_sort(nums):
+    n = len(nums)
+    pos = {num: i for i, num in enumerate(nums)}
+    target = list(range(n))
+    
+    operations = 0
+    
+    for i in range(n):
+        if nums[i]!= target[i]:
+            swap_with = pos[target[i]]
+            pos[nums[i]], pos[nums[swap_with]] = pos[target[i]], pos[nums[i]]
+            nums[i], nums[swap_with] = nums[swap_with], nums[i]
+            operations += 1
+    
+    return operations
+nums = [4, 2, 0, 3, 1]
+print(min_operations_to_sort(nums))  
