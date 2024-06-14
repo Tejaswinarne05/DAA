@@ -1,0 +1,23 @@
+def max_sum_distinct_subarray(nums, k):
+    from collections import defaultdict   
+    if k > len(nums):
+        return 0
+      max_sum = 0
+    current_sum = 0
+    count = defaultdict(int)   
+    for i in range(len(nums)):
+        current_sum += nums[i]
+        count[nums[i]] += 1
+        
+        if i >= k:
+            current_sum -= nums[i - k]
+            count[nums[i - k]] -= 1
+            if count[nums[i - k]] == 0:
+                del count[nums[i - k]]
+        
+        if i >= k - 1 and len(count) == k:
+            max_sum = max(max_sum, current_sum)    
+    return max_sum
+nums = [1, 5, 4, 2, 9, 9, 9]
+k = 3
+print(max_sum_distinct_subarray(nums, k))  
