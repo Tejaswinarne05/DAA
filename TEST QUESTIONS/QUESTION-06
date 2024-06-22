@@ -1,0 +1,26 @@
+from heapq import heappop, heappush
+
+class ListNode:
+    def __init__(self, val=0, next=None):
+        self.val = val
+        self.next = next
+
+def merge_k_lists(lists):
+    min_heap = []
+    for idx, lst in enumerate(lists):
+        if lst:
+            heappush(min_heap, (lst.val, idx, lst))
+
+    dummy = ListNode()
+    curr = dummy
+    while min_heap:
+        val, idx, node = heappop(min_heap)
+        curr.next = ListNode(val)
+        curr = curr.next
+        if node.next:
+            heappush(min_heap, (node.next.val, idx, node.next))
+
+    return dummy.next
+
+lists = [ListNode(1, ListNode(4, ListNode(5))), ListNode(1, ListNode(3, ListNode(4))), ListNode(2, ListNode(6))]
+merged_head = merge_k_lists(lists)
