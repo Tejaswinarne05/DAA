@@ -1,0 +1,12 @@
+def min_repeats(a, b):
+    repeat_count = -(-len(b) // len(a))  
+    if b in a * repeat_count:
+        return repeat_count
+    if b in a * (repeat_count + 1):
+        return repeat_count + 1
+    return -1
+
+
+a = "abcd"
+b = "cdabcdab"
+print(min_repeats(a, b))  # Output: 3
