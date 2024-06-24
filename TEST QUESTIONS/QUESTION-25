@@ -1,0 +1,22 @@
+def find_nth_digit(n):
+    length = 1  # current digit length
+    count = 9   # count of numbers with current digit length
+    start = 1   # starting number with current digit length
+
+    # Determine the range
+    while n > length * count:
+        n -= length * count
+        length += 1
+        count *= 10
+        start *= 10
+
+    # Locate the exact number and digit
+    start += (n - 1) // length
+    s = str(start)
+    return int(s[(n - 1) % length])
+
+n = 3
+print(find_nth_digit(n))  
+
+n = 11
+print(find_nth_digit(n))  
