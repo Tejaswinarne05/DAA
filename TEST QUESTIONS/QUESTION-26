@@ -1,0 +1,18 @@
+def longest_nice_substring(s):
+    def is_nice(subs):
+        return set(subs) == set(subs.swapcase())
+
+    def helper(s):
+        if len(s) < 2:
+            return ""
+        for i, c in enumerate(s):
+            if c.swapcase() not in s:
+                left = helper(s[:i])
+                right = helper(s[i + 1:])
+                return left if len(left) >= len(right) else right
+        return s
+
+    return helper(s)
+
+s = "YazaAay"
+print(longest_nice_substring(s))  
