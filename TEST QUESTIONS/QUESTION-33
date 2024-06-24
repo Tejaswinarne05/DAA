@@ -1,0 +1,34 @@
+from collections import deque
+
+def update_matrix(mat):
+    rows, cols = len(mat), len(mat[0])
+    distances = [[float('inf')] * cols for _ in range(rows)]
+    queue = deque()
+
+    # Initialize the queue with all 0s positions and set their distances to 0
+    for r in range(rows):
+        for c in range(cols):
+            if mat[r][c] == 0:
+                queue.append((r, c))
+                distances[r][c] = 0
+
+    directions = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+
+    # Perform BFS
+    while queue:
+        r, c = queue.popleft()
+        for dr, dc in directions:
+            nr, nc = r + dr, c + dc
+            if 0 <= nr < rows and 0 <= nc < cols:
+                if distances[nr][nc] > distances[r][c] + 1:
+                    distances[nr][nc] = distances[r][c] + 1
+                    queue.append((nr, nc))
+
+    return distances
+
+# Example usage
+mat1 = [[0, 0, 0], [0, 1, 0], [0, 0, 0]]
+mat2 = [[0, 0, 0], [0, 1, 0], [1, 1, 1]]
+
+print(update_matrix(mat1))  # Output: [[0,0,0],[0,1,0],[0,0,0]]
+print(update_matrix(mat2))  # Output: [[0,0,0],[0,1,0],[1,2,1]]
