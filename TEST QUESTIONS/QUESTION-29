@@ -1,0 +1,18 @@
+from collections import Counter
+
+def min_length_after_removals(nums):
+    counter = Counter(nums)
+    pairs = 0
+    keys = sorted(counter.keys())
+    for key in keys:
+        while counter[key] > 0 and pairs > 0:
+            counter[key] -= 1
+            pairs -= 1
+        
+        pairs += counter[key] // 2
+        counter[key] %= 2
+    
+    return len(nums) - 2 * pairs
+
+nums = [1, 2, 3, 4]
+print(min_length_after_removals(nums)) 
