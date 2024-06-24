@@ -1,0 +1,54 @@
+MOD = 10**9 + 7
+
+def good_strings(n, s1, s2, evil):
+    m = len(evil)
+    
+    def kmp_failure_function(s):
+        failure = [0] * len(s)
+        j = 0
+        for i in range(1, len(s)):
+            while j > 0 and s[i] != s[j]:
+                j = failure[j - 1]
+            if s[i] == s[j]:
+                j += 1
+                failure[i] = j
+            else:
+                failure[i] = 0
+        return failure
+    
+    def dfs(pos, match, isPrefix1, isPrefix2):
+        if match == m:
+            return 0
+        if pos == n:
+            return 1
+        
+        if (pos, match, isPrefix1, isPrefix2) in memo:
+            return memo[(pos, match, isPrefix1, isPrefix2)]
+        
+        lo = s1[pos] if isPrefix1 else 'a'
+        hi = s2[pos] if isPrefix2 else 'z'
+        
+        total = 0
+        for char in range(ord(lo), ord(hi) + 1):
+            ch = chr(char)
+            nextMatch = match
+            while nextMatch > 0 and ch != evil[nextMatch]:
+                nextMatch = kmp[nextMatch - 1]
+            if ch == evil[nextMatch]:
+                nextMatch += 1
+            
+            total += dfs(pos + 1, nextMatch, isPrefix1 and ch == lo, isPrefix2 and ch == hi)
+            total %= MOD
+        
+        memo[(pos, match, isPrefix1, isPrefix2)] = total
+        return total
+    
+    kmp = kmp_failure_function(evil)
+    memo = {}
+    return dfs(0, 0, True, True)
+
+n = 2
+s1 = "aa"
+s2 = "da"
+evil = "b"
+print(good_strings(n, s1, s2, evil)) 
