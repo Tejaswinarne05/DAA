@@ -1,0 +1,24 @@
+def min_repeats(a, b):
+    repeated_a = a
+    count = 1
+    
+    while len(repeated_a) < len(b):
+        repeated_a += a
+        count += 1
+        
+    if b in repeated_a:
+        return count
+    
+    # Check one more repetition in case b starts from the end of the last repeated_a
+    repeated_a += a
+    count += 1
+    
+    if b in repeated_a:
+        return count
+    
+    return -1
+
+# Example usage
+a = "abcd"
+b = "cdabcdab"
+print(min_repeats(a, b))  # Output: 3
