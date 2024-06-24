@@ -1,0 +1,26 @@
+from sortedcontainers import SortedList
+
+def contains_nearby_almost_duplicate(nums, indexDiff, valueDiff):
+    if not nums or indexDiff <= 0 or valueDiff < 0:
+        return False
+    
+    sorted_list = SortedList()
+    
+    for i, num in enumerate(nums):
+        if i > indexDiff:
+            sorted_list.remove(nums[i - indexDiff - 1])
+        
+        pos1 = sorted_list.bisect_left(num - valueDiff)
+        pos2 = sorted_list.bisect_right(num + valueDiff)
+        
+        if pos1 != pos2 and pos1 != len(sorted_list):
+            return True
+        
+        sorted_list.add(num)
+    
+    return False
+
+nums = [1, 2, 3, 1]
+indexDiff = 3
+valueDiff = 0
+print(contains_nearby_almost_duplicate(nums, indexDiff, valueDiff))  
