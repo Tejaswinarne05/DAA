@@ -1,0 +1,20 @@
+from sortedcontainers import SortedList
+
+def countPairs(nums1, nums2, diff):
+    n = len(nums1)
+    result = 0
+    sorted_list = SortedList()
+    
+    for i in range(n):
+        target = nums1[i] - nums2[i]
+        count = sorted_list.bisect_right(target + diff)
+        result += count
+        sorted_list.add(target)
+    
+    return result
+
+# Example usage:
+nums1 = [3, 2, 5]
+nums2 = [2, 2, 1]
+diff = 1
+print(countPairs(nums1, nums2, diff))  # Output: 3
