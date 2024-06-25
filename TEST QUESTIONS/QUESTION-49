@@ -1,0 +1,53 @@
+MOD = 10**9 + 7
+
+def build_kmp_table(pattern):
+    m = len(pattern)
+    kmp_table = [0] * m
+    j = 0
+    
+    for i in range(1, m):
+        while j > 0 and pattern[i] != pattern[j]:
+            j = kmp_table[j - 1]
+        if pattern[i] == pattern[j]:
+            j += 1
+        kmp_table[i] = j
+    
+    return kmp_table
+
+def count_good_strings(n, s1, s2, evil):
+    kmp_table = build_kmp_table(evil)
+    m = len(evil)
+    
+    def dp(i, tight1, tight2, evil_pos):
+        if evil_pos == m:
+            return 0
+        if i == n:
+            return 1
+        
+        limit1 = s1[i] if tight1 else 'a'
+        limit2 = s2[i] if tight2 else 'z'
+        res = 0
+        
+        for ch in range(ord(limit1), ord(limit2) + 1):
+            c = chr(ch)
+            new_tight1 = tight1 and (c == limit1)
+            new_tight2 = tight2 and (c == limit2)
+            
+            j = evil_pos
+            while j > 0 and evil[j] != c:
+                j = kmp_table[j - 1]
+            if c == evil[j]:
+                j += 1
+            
+            res = (res + dp(i + 1, new_tight1, new_tight2, j)) % MOD
+        
+        return res
+    
+    return dp(0, True, True, 0)
+
+# Example usage:
+n = 2
+s1 = "aa"
+s2 = "da"
+evil = "b"
+print(count_good_strings(n, s1, s2, evil))  # Output: 51
