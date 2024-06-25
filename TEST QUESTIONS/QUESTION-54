@@ -1,0 +1,24 @@
+def longestNiceSubstring(s):
+    def is_nice(sub):
+        charset = set(sub)
+        return all(c.swapcase() in charset for c in charset)
+    
+    def helper(s):
+        if len(s) < 2:
+            return ""
+        
+        for i, c in enumerate(s):
+            if c.swapcase() not in s:
+                left = helper(s[:i])
+                right = helper(s[i+1:])
+                return left if len(left) >= len(right) else right
+        
+        return s
+    
+    return helper(s)
+
+# Example usage
+print(longestNiceSubstring("YazaAay"))  # Output: "aAa"
+print(longestNiceSubstring("BbAa"))     # Output: "BbAa"
+print(longestNiceSubstring("abA"))      # Output: ""
+print(longestNiceSubstring("c"))        # Output: ""
