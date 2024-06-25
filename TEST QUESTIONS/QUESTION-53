@@ -1,0 +1,23 @@
+def findNthDigit(n):
+    # Initialize the range
+    digit_length = 1
+    count = 9
+    start = 1
+    
+    # Determine the range that contains the nth digit
+    while n > digit_length * count:
+        n -= digit_length * count
+        digit_length += 1
+        count *= 10
+        start *= 10
+    
+    # Find the exact number that contains the nth digit
+    num = start + (n - 1) // digit_length
+    
+    # Find the exact digit in the number
+    digit_index = (n - 1) % digit_length
+    return int(str(num)[digit_index])
+
+# Example usage
+print(findNthDigit(3))   # Output: 3
+print(findNthDigit(11))  # Output: 0
