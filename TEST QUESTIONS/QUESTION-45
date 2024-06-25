@@ -1,0 +1,25 @@
+def setZeroes(matrix):
+    m, n = len(matrix), len(matrix[0])
+    rows, cols = set(), set()
+    
+    # First pass: mark the rows and columns that need to be zeroed
+    for i in range(m):
+        for j in range(n):
+            if matrix[i][j] == 0:
+                rows.add(i)
+                cols.add(j)
+    
+    # Second pass: update the matrix
+    for i in range(m):
+        for j in range(n):
+            if i in rows or j in cols:
+                matrix[i][j] = 0
+
+# Example usage:
+matrix = [
+    [1, 1, 1],
+    [1, 0, 1],
+    [1, 1, 1]
+]
+setZeroes(matrix)
+print(matrix)  # Output: [[1, 0, 1], [0, 0, 0], [1, 0, 1]]
