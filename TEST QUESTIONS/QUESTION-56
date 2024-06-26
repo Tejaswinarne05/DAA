@@ -1,0 +1,18 @@
+def containsNearbyAlmostDuplicate(nums, indexDiff, valueDiff):
+    if not nums:
+        return False    
+    from sortedcontainers import SortedList
+    sorted_list = SortedList()    
+    for i, num in enumerate(nums):
+        # Check for the smallest number >= nums[i] - valueDiff
+        pos = SortedList.bisect_left(sorted_list, num - valueDiff)
+        if pos < len(sorted_list) and sorted_list[pos] <= num + valueDiff:
+            return True        
+        sorted_list.add(num)
+        if i >= indexDiff:
+            sorted_list.remove(nums[i - indexDiff])    
+    return False
+nums = [1, 2, 3, 1]
+indexDiff = 3
+valueDiff = 0
+print(containsNearbyAlmostDuplicate(nums, indexDiff, valueDiff))  
