@@ -1,0 +1,13 @@
+def sum_of_squares(nums):
+    n = len(nums)
+    result = 0
+    for i in range(n):
+        distinct_values = set()
+        for j in range(i, n):
+            distinct_values.add(nums[j])
+            result += len(distinct_values) ** 2
+    return result
+nums1 = [1, 2, 1]
+nums2 = [1, 1]
+print(sum_of_squares(nums1))  
+print(sum_of_squares(nums2))  
