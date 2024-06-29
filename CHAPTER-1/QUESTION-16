@@ -1,0 +1,29 @@
+def game_of_life(board):
+    def count_live_neighbors(board, row, col):
+        live_neighbors = 0
+        for i in range(row-1, row+2):
+            for j in range(col-1, col+2):
+                if (i == row and j == col) or i < 0 or j < 0 or i >= len(board) or j >= len(board[0]):
+                    continue
+                if board[i][j] == 1 or board[i][j] == -1:
+                    live_neighbors += 1
+        return live_neighbors
+
+    for i in range(len(board)):
+        for j in range(len(board[0])):
+            live_neighbors = count_live_neighbors(board, i, j)
+            if board[i][j] == 1 and (live_neighbors < 2 or live_neighbors > 3):
+                board[i][j] = -1
+            if board[i][j] == 0 and live_neighbors == 3:
+                board[i][j] = 2
+
+    for i in range(len(board)):
+        for j in range(len(board[0])):
+            if board[i][j] > 0:
+                board[i][j] = 1
+            else:
+                board[i][j] = 0
+
+board1 = [[0,1,0],[0,0,1],[1,1,1],[0,0,0]]
+game_of_life(board1)
+print(board1)  
