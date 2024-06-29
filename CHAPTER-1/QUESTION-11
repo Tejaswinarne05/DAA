@@ -1,0 +1,15 @@
+def find_paths(m, n, N, i, j):
+    memo = {}
+    def dfs(m, n, N, i, j):
+        if i < 0 or i >= m or j < 0 or j >= n:
+            return 1
+        if N == 0:
+            return 0
+        if (i, j, N) in memo:
+            return memo[(i, j, N)]
+        paths = (dfs(m, n, N - 1, i - 1, j) + dfs(m, n, N - 1, i + 1, j) +
+                 dfs(m, n, N - 1, i, j - 1) + dfs(m, n, N - 1, i, j + 1))
+        memo[(i, j, N)] = paths
+        return paths
+    return dfs(m, n, N, i, j)
+print(find_paths(2, 2, 2, 0, 0)) 
